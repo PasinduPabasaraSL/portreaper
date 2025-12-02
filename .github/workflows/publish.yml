@@ -1,21 +1,18 @@
-name: Publish to PyPI
+name: Publish PortReaper to PyPI
 
 on:
   push:
     branches:
-      - main                # ← Every push to main = publish a dev/pre-release
+      - main                  # every push to main → pre-release / dev version
     tags:
-      - "v*"                # ← Tagged releases = official stable version
+      - "v*"                  # v0.1.0, v1.0.0 etc. → official stable release
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write       # ← Required for trusted publishing (new 2025 method)
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -28,21 +25,19 @@ jobs:
       - name: Build package
         run: python -m build
 
-      # Official stable release (when a tag like v0.1.0 exists)
-      - name: Publish stable to PyPI (tagged releases only)
+      # Official stable release (only when a tag like v0.1.0 is pushed)
+      - name: Publish stable release to PyPI
         if: startsWith(github.ref, 'refs/tags/v')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository-url: https://upload.pypi.org/legacy/
           password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
 
-      # Development/pre-release on every main push
-      - name: Publish pre-release to PyPI (main branch)
+      # Development / pre-release on every main push
+      - name: Publish dev version to PyPI (main branch)
         if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository-url: https://upload.pypi.org/legacy/
           password: ${{ secrets.PYPI_API_TOKEN }}
-          packages-dir: dist/
-          skip-existing: true      # Don't fail if version already exists
+          skip-existing: true      # prevents "version already exists" errors
           verbose: true

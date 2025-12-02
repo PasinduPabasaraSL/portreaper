@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "portreaper"
 version = "0.1.0"
-description = "The Grim Reaper for processes hogging your ports 💀"
-authors = [{name = "Your Name", email = "you@example.com"}]
+description = "The Grim Reaper for processes hogging your ports"
+authors = [{name = "rootcypher", email = "pabasarapasindu365@gmail.com"}]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
@@ -17,8 +17,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/portreaper"
-Repository = "https://github.com/yourusername/portreaper"
+Homepage = "https://github.com/PasinduPabasaraSL/portreaper"
+Repository = "https://github.com/PasinduPabasaraSL/portreaper"
 
 [project.scripts]
 portreaper = "portreaper.main:cli"
